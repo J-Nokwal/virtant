@@ -1,6 +1,6 @@
 # virtant
 
-A new Flutter project.
+Software Enginnering UCS503 project
 
 ## Getting Started
 
