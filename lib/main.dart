@@ -1,64 +1,77 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_scan_bluetooth/flutter_scan_bluetooth.dart';
 
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(new MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
+  _MyAppState createState() => new _MyAppState();
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
+class _MyAppState extends State<MyApp> {
+  String _data = '';
+  bool _scanning = false;
+  FlutterScanBluetooth _bluetooth = FlutterScanBluetooth();
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
+  void initState() {
+    super.initState();
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
+    _bluetooth.devices.listen((device) {
+      setState(() {
+        _data += device.name + ' (${device.address})\n';
+        print(
+            "${device.name} : ${device.address} : ${device.paired} : ${device.nearby} ");
+      });
+    });
+    _bluetooth.scanStopped.listen((device) {
+      setState(() {
+        _scanning = false;
+        _data += 'scan stopped\n';
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+    return new MaterialApp(
+      home: new Scaffold(
+        appBar: new AppBar(
+          title: const Text('Plugin example app'),
+        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
+            Expanded(child: Text(_data)),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: ElevatedButton(
+                    child: Text(_scanning ? 'Stop scan' : 'Start scan'),
+                    onPressed: () async {
+                      try {
+                        if (_scanning) {
+                          await _bluetooth.stopScan();
+                          debugPrint("scanning stoped");
+                          setState(() {
+                            _data = '';
+                          });
+                        } else {
+                          await _bluetooth.startScan(pairedDevices: false);
+                          debugPrint("scanning started");
+                          setState(() {
+                            _scanning = true;
+                          });
+                        }
+                      } on PlatformException catch (e) {
+                        debugPrint(e.toString());
+                      }
+                    }),
+              ),
+            )
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
       ),
     );
   }
