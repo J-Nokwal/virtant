@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "923414018422",
+    "project_id": "virtant-b3e56",
+    "storage_bucket": "virtant-b3e56.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:923414018422:android:894a5591e57fbb542be257",
+        "android_client_info": {
+          "package_name": "com.example.virtant"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "923414018422-jvtpkg8mb83d1h8k9agsbs6ccfditkdv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.virtant",
+            "certificate_hash": "0057ee3f58123f4c31068c323d050d0ef2bffc42"
+          }
+        },
+        {
+          "client_id": "923414018422-g620o4uq3nfekv97ubqprepnouu0nerr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvR3o4-ZTIyGOtMV9ySyFCj7M1lTDg-bg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "923414018422-g620o4uq3nfekv97ubqprepnouu0nerr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

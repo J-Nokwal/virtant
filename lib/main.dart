@@ -1,77 +1,55 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_scan_bluetooth/flutter_scan_bluetooth.dart';
 
-void main() => runApp(new MyApp());
+import 'package:firebase_core/firebase_core.dart';
+import 'package:virtant/screens/SplashScreen.dart';
+import 'package:virtant/screens/somethingWentWrong.dart';
 
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => new _MyAppState();
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(new MyApp());
 }
 
-class _MyAppState extends State<MyApp> {
-  String _data = '';
-  bool _scanning = false;
-  FlutterScanBluetooth _bluetooth = FlutterScanBluetooth();
-
+class MyApp extends StatelessWidget {
   @override
-  void initState() {
-    super.initState();
-
-    _bluetooth.devices.listen((device) {
-      setState(() {
-        _data += device.name + ' (${device.address})\n';
-        print(
-            "${device.name} : ${device.address} : ${device.paired} : ${device.nearby} ");
-      });
-    });
-    _bluetooth.scanStopped.listen((device) {
-      setState(() {
-        _scanning = false;
-        _data += 'scan stopped\n';
-      });
-    });
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Material App',
+      home: App(),
+    );
   }
+}
+
+class App extends StatelessWidget {
+  // Create the initialization Future outside of `build`:
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
 
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-      home: new Scaffold(
-        appBar: new AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Expanded(child: Text(_data)),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
-                child: ElevatedButton(
-                    child: Text(_scanning ? 'Stop scan' : 'Start scan'),
-                    onPressed: () async {
-                      try {
-                        if (_scanning) {
-                          await _bluetooth.stopScan();
-                          debugPrint("scanning stoped");
-                          setState(() {
-                            _data = '';
-                          });
-                        } else {
-                          await _bluetooth.startScan(pairedDevices: false);
-                          debugPrint("scanning started");
-                          setState(() {
-                            _scanning = true;
-                          });
-                        }
-                      } on PlatformException catch (e) {
-                        debugPrint(e.toString());
-                      }
-                    }),
-              ),
-            )
-          ],
-        ),
+    return FutureBuilder(
+      // Initialize FlutterFire:
+      future: _initialization,
+      builder: (context, snapshot) {
+        // Check for errors
+        if (snapshot.hasError) {
+          return SomethingWentWrong();
+        }
+        // Once complete, show your application
+        if (snapshot.connectionState == ConnectionState.done) {
+          return MyAppp();
+        }
+
+        return SplashScreen(); // Otherwise, show something whilst waiting for initialization to complete
+      },
+    );
+  }
+}
+
+class MyAppp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        child: Center(child: Text("MyApp")),
       ),
     );
   }
