@@ -26,13 +26,16 @@ class ClassFirestore {
   }
 
   Future<String> createClass(
-      {@required String teacherName, @required String className}) async {
+      {@required String teacherName,
+      @required String className,
+      @required String teacherBlueAddress}) async {
     DocumentReference classDoc =
         firestoreInstance.collection('class').doc(user.uid);
     classDoc.set({
       'className': className,
       'teacherNmae': teacherName,
-      'isRecordingAttendance': false
+      'isRecordingAttendance': false,
+      'teacherBlueAddress': teacherBlueAddress,
     });
     classDoc.collection('quiz');
     classDoc.collection('assignment');
@@ -45,10 +48,33 @@ class ClassFirestore {
       {@required String classUid, @required String studentName}) async {
     DocumentReference studentDoc =
         firestoreInstance.collection('students').doc(user.uid);
+
     studentDoc.set({'studentName': studentName, 'classUid': classUid});
     studentDoc.collection('assignment');
     studentDoc.collection('quiz');
     studentDoc.collection('attendance');
+    firestoreInstance
+        .collection('class')
+        .doc(classUid)
+        .collection('classStudents')
+        .doc(user.uid);
+    firestoreInstance
+        .collection('class')
+        .doc(classUid)
+        .update({'noOfStudents': FieldValue.increment(1)});
+
     return true;
   }
+
+  Future<void> startTakingAttendance() async {}
+  Future<void> markAttendance() async {}
+  // to add viewAttendance from teacherside and student side
+  // to add manual mark attendance
+  Future<void> createAssignment() async {}
+  Future<void> submitAssignment() async {}
+  // to view assignments from both side
+  Future<void> createQuiz() async {}
+  Future<void> giveQuiz() async {}
+  // to view result from both side
+  // to add feedback fxn
 }

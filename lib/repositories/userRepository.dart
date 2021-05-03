@@ -15,6 +15,7 @@ class UserRepository {
         email: email,
         password: pass,
       );
+
       print("REPO : ${authResult.user.email}");
       await authResult.user.sendEmailVerification();
       return authResult.user;
