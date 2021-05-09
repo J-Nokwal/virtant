@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 
 class UserRepository {
   FirebaseAuth firebaseAuth;
@@ -9,7 +10,8 @@ class UserRepository {
   }
 
   // sign up with email
-  Future<User> signUpUserWithEmailPass(String email, String pass) async {
+  Future<User> signUpUserWithEmailPass(
+      {@required String email, @required String pass}) async {
     try {
       var authResult = await firebaseAuth.createUserWithEmailAndPassword(
         email: email,
@@ -18,6 +20,7 @@ class UserRepository {
 
       print("REPO : ${authResult.user.email}");
       await authResult.user.sendEmailVerification();
+
       return authResult.user;
     } on PlatformException catch (e) {
       String authError = "";
@@ -114,6 +117,11 @@ class UserRepository {
     return currentUser != null;
   }
 
+  Future<bool> isFirebaseSetUp() async {
+    var name = firebaseAuth.currentUser.displayName;
+    return name != null;
+  }
+
   // get current user
   Future<User> getCurrentUser() async {
     return FirebaseAuth.instance.currentUser;
@@ -121,6 +129,10 @@ class UserRepository {
 
   bool isVerified() {
     return FirebaseAuth.instance.currentUser.emailVerified;
+  }
+
+  Future<void> updateUserName({@required String userName}) async {
+    await firebaseAuth.currentUser.updateProfile(displayName: userName);
   }
 }
 

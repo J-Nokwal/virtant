@@ -27,6 +27,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   firebase_auth: ^1.1.2
   firebase_core: ^1.1.0
+  flutter_bloc: ^7.0.0
   flutter_bluetooth_serial: ^0.2.2
   flutter_scan_bluetooth: ^2.0.0
 dev_dependencies:

@@ -27,15 +27,19 @@ class ClassFirestore {
 
   Future<String> createClass(
       {@required String teacherName,
+      @required String classDescription,
       @required String className,
-      @required String teacherBlueAddress}) async {
+      @required String teacherBlueAddress,
+      @required String teacherBlueName}) async {
     DocumentReference classDoc =
         firestoreInstance.collection('class').doc(user.uid);
     classDoc.set({
+      'classDescription': classDescription,
       'className': className,
       'teacherNmae': teacherName,
       'isRecordingAttendance': false,
       'teacherBlueAddress': teacherBlueAddress,
+      'teacherBlueName': teacherBlueName
     });
     classDoc.collection('quiz');
     classDoc.collection('assignment');
@@ -45,11 +49,17 @@ class ClassFirestore {
   }
 
   Future<bool> joinClass(
-      {@required String classUid, @required String studentName}) async {
+      {@required String classUid,
+      @required String studentName,
+      @required int studentRollNo}) async {
     DocumentReference studentDoc =
         firestoreInstance.collection('students').doc(user.uid);
 
-    studentDoc.set({'studentName': studentName, 'classUid': classUid});
+    studentDoc.set({
+      'studentName': studentName,
+      'classUid': classUid,
+      'studentRollNo': studentRollNo
+    });
     studentDoc.collection('assignment');
     studentDoc.collection('quiz');
     studentDoc.collection('attendance');

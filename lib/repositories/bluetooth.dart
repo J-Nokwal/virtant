@@ -1,6 +1,7 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
-// ignore: unused_import
-import 'package:flutter_scan_bluetooth/flutter_scan_bluetooth.dart';
+import 'package:flutter_scan_bluetooth/flutter_scan_bluetooth.dart' as ScanBlue;
 
 class Bluetooth {
   FlutterBluetoothSerial bInstance;
@@ -10,14 +11,26 @@ class Bluetooth {
   Future<String> getAddres() async {
     return await this.bInstance.address;
   }
+
+  Future<String> getName() async {
+    return await this.bInstance.name;
+  }
+
+  Future<bool> isNearBy(
+      {@required String bluetoothName,
+      @required String bluetoothAddress}) async {
+    //may have problems
+    ScanBlue.BluetoothDevice bd;
+    bd = ScanBlue.BluetoothDevice(bluetoothName, bluetoothAddress);
+    return bd.nearby;
+  }
 }
-
-
 
 // class MyApp extends StatefulWidget {
 //   @override
 //   _MyAppState createState() => new _MyAppState();
 // }
+
 // class _MyAppState extends State<MyApp> {
 //   String _data = '';
 //   bool _scanning = false;
@@ -26,24 +39,26 @@ class Bluetooth {
 //   @override
 //   void initState() {
 //     super.initState();
+    
 
 //     _bluetooth.devices.listen((device) {
-//       setState(() {
-//         _data += device.name + ' (${device.address})\n';
-//         print(
-//             "${device.name} : ${device.address} : ${device.paired} : ${device.nearby} ");
-//       });
-//     });
-//     _bluetooth.scanStopped.listen((device) {
-//       setState(() {
-//         _scanning = false;
-//         _data += 'scan stopped\n';
-//       });
-//     });
-//   }
+      // setState(() {
+  //       _data += device.name + ' (${device.address})\n';
+  //       print(
+  //           "${device.name} : ${device.address} : ${device.paired} : ${device.nearby} ");
+  //     });
+  //   });
+  //   _bluetooth.scanStopped.listen((device) {
+  //     setState(() {
+  //       _scanning = false;
+  //       _data += 'scan stopped\n';
+  //     });
+  //   });
+  // }
 
-//   @override
-//   Widget build(BuildContext context) {
+
+  // @override
+  // Widget build(BuildContext context) {
 //     return new MaterialApp(
 //       home: new Scaffold(
 //         appBar: new AppBar(
@@ -52,6 +67,7 @@ class Bluetooth {
 //         body: Column(
 //           mainAxisAlignment: MainAxisAlignment.start,
 //           children: <Widget>[
+
 //             Expanded(child: Text(_data)),
 //             Padding(
 //               padding: const EdgeInsets.all(8.0),
