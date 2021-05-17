@@ -118,8 +118,14 @@ class UserRepository {
   }
 
   Future<bool> isFirebaseSetUp() async {
-    var name = firebaseAuth.currentUser.displayName;
+    var name = firebaseAuth.currentUser?.displayName;
     return name != null;
+
+    // try {var name = firebaseAuth.currentUser?.displayName;
+    // return name != null;} catch (e) {
+    //   print(e);
+    //   return false;
+    // }
   }
 
   // get current user

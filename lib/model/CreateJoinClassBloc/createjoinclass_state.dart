@@ -7,10 +7,6 @@ class CreateJoinClassInitialState extends CreateJoinClassState {}
 
 class CreateJoinClassLoadingState extends CreateJoinClassState {}
 
-class CreateClassState extends CreateJoinClassState {}
+class CreateClassSuccessFullState extends CreateJoinClassState {}
 
-class JoinClassState extends CreateJoinClassState {}
-
-class CreateSuccessFullState extends CreateJoinClassState {}
-
-class JoinSuccessFullState extends CreateJoinClassState {}
+class JoinClassSuccessFullState extends CreateJoinClassState {}

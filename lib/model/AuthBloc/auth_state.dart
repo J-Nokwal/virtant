@@ -14,3 +14,5 @@ class AuthenticatedState extends AuthState {
 }
 
 class AuthFirebaseSetUp extends AuthState {}
+
+class AuthenticatingState extends AuthState {}

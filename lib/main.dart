@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:virtant/model/AuthBloc/auth_bloc.dart';
+import 'package:virtant/repositories/userRepository.dart';
+import 'package:virtant/routeGenerator.dart';
 import 'package:virtant/screens/SplashScreen.dart';
+import 'package:virtant/screens/authScreens/signInScreen.dart';
+import 'package:virtant/screens/debugScreen.dart';
 import 'package:virtant/screens/somethingWentWrong.dart';
 
 void main() {
@@ -14,7 +20,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Material App',
-      home: App(),
+
+      // initialRoute: '/SignUp/SignUpBasic',
+      // initialRoute: '/signUp'
+      initialRoute: '/',
+      onGenerateRoute: RouteGenerator.generateRoute,
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -45,12 +56,25 @@ class App extends StatelessWidget {
 }
 
 class MyAppp extends StatelessWidget {
+  final UserRepository userRepository = UserRepository();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        child: Center(child: Text("MyApp")),
-      ),
+    return BlocProvider(
+      create: (context) =>
+          AuthBloc(userRepository: userRepository)..add(AppStartedEvent()),
+      child: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+        if (state is AuthenticatingState) {
+          return SplashScreen();
+        } else if (state is UnAuthenticatedState) {
+          return SignInScreen();
+        } else if (state is AuthFirebaseSetUp) {
+          return DebugScreen(text: 'AuthFirebaseSetUp44444444444444444444');
+        } else if (state is AuthenticatedState) {
+          return DebugScreen(
+              text: 'AuthenticatedState4666666666666666666666666');
+        }
+        return DebugScreen(text: 'bloc screen7777777777777777777777777777');
+      }),
     );
   }
 }

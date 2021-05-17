@@ -12,25 +12,19 @@ part 'createjoinclass_state.dart';
 
 class CreateJoinClassBloc
     extends Bloc<CreateJoinClassEvent, CreateJoinClassState> {
-  final UserRepository userRepository;
-  final User user;
-  CreateJoinClassBloc({@required this.user, @required this.userRepository})
-      : super(CreateJoinClassInitialState());
+  final UserRepository userRepository = UserRepository();
 
+  CreateJoinClassBloc() : super(CreateJoinClassInitialState());
+//TODO Implement CreateClassSuccessFullState end result
+//TODO Implement JoinClassSuccessFullState end result
   @override
   Stream<CreateJoinClassState> mapEventToState(
     CreateJoinClassEvent event,
   ) async* {
+    final User user = await userRepository.getCurrentUser();
     final ClassFirestore classFirestore = ClassFirestore(user: user);
+    String name;
     if (event is CreateClassEvent) {
-      yield CreateJoinClassLoadingState();
-      await userRepository.updateUserName(userName: event.teacherName);
-      yield CreateClassState();
-    } else if (event is JoinClassEvent) {
-      yield CreateJoinClassLoadingState();
-      await userRepository.updateUserName(userName: event.studentName);
-      yield JoinClassState();
-    } else if (event is CreateClassFinalEvent) {
       yield CreateJoinClassLoadingState();
       Bluetooth bluetooth = Bluetooth();
       String teacherBlueAddress = await bluetooth.getAddres();
@@ -41,14 +35,16 @@ class CreateJoinClassBloc
           teacherName: user.displayName,
           className: event.className,
           classDescription: event.classDescription);
-      yield CreateSuccessFullState();
-    } else if (event is JoinClassFinalEvent) {
+      await userRepository.updateUserName(userName: name);
+      yield CreateClassSuccessFullState();
+    } else if (event is JoinClassEvent) {
       yield CreateJoinClassLoadingState();
       await classFirestore.joinClass(
           classUid: event.classUid,
           studentName: user.displayName,
           studentRollNo: event.studentRollNo);
-      yield JoinSuccessFullState();
+      await userRepository.updateUserName(userName: name);
+      yield JoinClassSuccessFullState();
     }
   }
 }

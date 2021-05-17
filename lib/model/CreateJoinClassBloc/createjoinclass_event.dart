@@ -4,29 +4,23 @@ part of 'createjoinclass_bloc.dart';
 abstract class CreateJoinClassEvent {}
 
 class JoinClassEvent extends CreateJoinClassEvent {
-  final String studentName;
+  final String classUid, studentName;
+  final int studentRollNo;
 
-  JoinClassEvent({@required this.studentName});
+  JoinClassEvent({
+    @required this.classUid,
+    @required this.studentRollNo,
+    @required this.studentName,
+  });
 }
 
 class CreateClassEvent extends CreateJoinClassEvent {
-  final String teacherName;
+  final String className, classDescription, classSubject, teacherName;
 
-  CreateClassEvent({@required this.teacherName});
-}
-
-class JoinClassFinalEvent extends CreateJoinClassEvent {
-  final String classUid;
-  final int studentRollNo;
-
-  JoinClassFinalEvent({@required this.classUid, @required this.studentRollNo});
-}
-
-class CreateClassFinalEvent extends CreateJoinClassEvent {
-  final String className, classDescription;
-
-  CreateClassFinalEvent({
+  CreateClassEvent({
     @required this.className,
+    @required this.classSubject,
     @required this.classDescription,
+    @required this.teacherName,
   });
 }

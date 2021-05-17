@@ -17,7 +17,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthEvent event,
   ) async* {
     //add try catch
-    if (event is AuthInitialState) {
+    if (event is AppStartedEvent) {
+      yield AuthenticatingState();
       bool isSignedIn = await userRepository.isSignedIn();
       bool isFirebaseSetUp = await userRepository.isFirebaseSetUp();
       if (isSignedIn) {
