@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:virtant/model/CreateJoinClassBloc/createjoinclass_bloc.dart';
 import 'package:virtant/screens/SplashScreen.dart';
@@ -8,8 +9,9 @@ import '../widgetTools.dart';
 
 class SignUpBasicStudentScreen extends StatelessWidget {
   final String displayName;
-
-  const SignUpBasicStudentScreen({Key key, @required this.displayName})
+  final TextEditingController _classUid = TextEditingController();
+  final TextEditingController _rollNo = TextEditingController();
+  SignUpBasicStudentScreen({Key key, @required this.displayName})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,8 @@ class SignUpBasicStudentScreen extends StatelessWidget {
               child: BlocConsumer<CreateJoinClassBloc, CreateJoinClassState>(
                 listener: (context, state) {
                   if (state is JoinClassSuccessFullState) {
-                    //TODO implement pop message
+                    Navigator.of(context)
+                        .popAndPushNamed('/d', arguments: 'Student Home page');
                   }
                 },
                 builder: (context, state) {
@@ -53,6 +56,7 @@ class SignUpBasicStudentScreen extends StatelessWidget {
                                 height: 40,
                               ),
                               TextFormField(
+                                controller: _classUid,
                                 decoration: InputDecoration(
                                     enabledBorder: outlineFormInputBorder(),
                                     focusColor: purpleDark,
@@ -67,6 +71,8 @@ class SignUpBasicStudentScreen extends StatelessWidget {
                               ),
                               SizedBox(height: 20),
                               TextFormField(
+                                controller: _rollNo,
+                                keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
                                     enabledBorder: outlineFormInputBorder(),
                                     focusColor: purpleDark,
@@ -95,11 +101,12 @@ class SignUpBasicStudentScreen extends StatelessWidget {
                                   )),
                                 ),
                                 onTap: () {
-                                  //TODO implement controller
-                                  CreateJoinClassBloc().add(JoinClassEvent(
-                                      classUid: 'classUid',
-                                      studentRollNo: 1,
-                                      studentName: 'studentName'));
+                                  BlocProvider.of<CreateJoinClassBloc>(context)
+                                      .add(JoinClassEvent(
+                                          classUid: _classUid.text,
+                                          studentRollNo:
+                                              int.parse(_rollNo.text),
+                                          studentName: displayName));
                                 },
                               ),
                               SizedBox(height: 15),

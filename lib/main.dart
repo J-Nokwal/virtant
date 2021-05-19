@@ -6,8 +6,8 @@ import 'package:virtant/model/AuthBloc/auth_bloc.dart';
 import 'package:virtant/repositories/userRepository.dart';
 import 'package:virtant/routeGenerator.dart';
 import 'package:virtant/screens/SplashScreen.dart';
-import 'package:virtant/screens/authScreens/signInScreen.dart';
 import 'package:virtant/screens/debugScreen.dart';
+import 'package:virtant/screens/homeScreens/homeScreen.dart';
 import 'package:virtant/screens/somethingWentWrong.dart';
 
 void main() {
@@ -18,14 +18,15 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // return MaterialApp(
+    //   title: 'Material App',
+    //   initialRoute: '/home',
+    //   onGenerateRoute: RouteGenerator.generateRoute,
+    //   debugShowCheckedModeBanner: false,
+    // );
     return MaterialApp(
-      title: 'Material App',
-
-      // initialRoute: '/SignUp/SignUpBasic',
-      // initialRoute: '/signUp'
-      initialRoute: '/',
-      onGenerateRoute: RouteGenerator.generateRoute,
       debugShowCheckedModeBanner: false,
+      home: HomeScreen(),
     );
   }
 }
@@ -62,16 +63,18 @@ class MyAppp extends StatelessWidget {
     return BlocProvider(
       create: (context) =>
           AuthBloc(userRepository: userRepository)..add(AppStartedEvent()),
-      child: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+      child: BlocConsumer<AuthBloc, AuthState>(listener: (context, state) {
+        if (state is AuthenticatedState) {
+          Navigator.of(context)
+              .popAndPushNamed('/d', arguments: 'home page with');
+        } else if (state is UnAuthenticatedState) {
+          Navigator.of(context).popAndPushNamed('/SignIn');
+        } else if (state is AuthFirebaseSetUp) {
+          Navigator.of(context).popAndPushNamed('/SignUp/SignUpBasic');
+        }
+      }, builder: (context, state) {
         if (state is AuthenticatingState) {
           return SplashScreen();
-        } else if (state is UnAuthenticatedState) {
-          return SignInScreen();
-        } else if (state is AuthFirebaseSetUp) {
-          return DebugScreen(text: 'AuthFirebaseSetUp44444444444444444444');
-        } else if (state is AuthenticatedState) {
-          return DebugScreen(
-              text: 'AuthenticatedState4666666666666666666666666');
         }
         return DebugScreen(text: 'bloc screen7777777777777777777777777777');
       }),

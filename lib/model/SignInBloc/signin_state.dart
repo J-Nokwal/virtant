@@ -18,8 +18,8 @@ class SignInSuccessFullState extends SignInState {
   SignInSuccessFullState({@required this.user});
 }
 
-// class SignUpButtonPressedState extends SignInState {}
+class SignUpButtonPressedFromSignInScreenState extends SignInState {}
 
-// class ForgotPasswordButtonPressedState extends SignInState {}
+class ForgotPasswordButtonPressedState extends SignInState {}
 
 class SignInFirebaseNotSetUpState extends SignInState {}

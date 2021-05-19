@@ -19,7 +19,7 @@ class UserRepository {
       );
 
       print("REPO : ${authResult.user.email}");
-      await authResult.user.sendEmailVerification();
+      // TODO: await authResult.user.sendEmailVerification();
 
       return authResult.user;
     } on PlatformException catch (e) {
@@ -118,7 +118,8 @@ class UserRepository {
   }
 
   Future<bool> isFirebaseSetUp() async {
-    var name = firebaseAuth.currentUser?.displayName;
+    var name = firebaseAuth.currentUser.displayName;
+
     return name != null;
 
     // try {var name = firebaseAuth.currentUser?.displayName;

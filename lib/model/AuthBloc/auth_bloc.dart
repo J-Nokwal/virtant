@@ -20,13 +20,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (event is AppStartedEvent) {
       yield AuthenticatingState();
       bool isSignedIn = await userRepository.isSignedIn();
-      bool isFirebaseSetUp = await userRepository.isFirebaseSetUp();
       if (isSignedIn) {
+        bool isFirebaseSetUp = await userRepository.isFirebaseSetUp();
+
         if (!isFirebaseSetUp) {
           yield AuthFirebaseSetUp();
         } else {
           yield AuthenticatedState(user: await userRepository.getCurrentUser());
         }
+        // print((await userRepository.getCurrentUser()).toString());
       } else {
         yield UnAuthenticatedState();
       }

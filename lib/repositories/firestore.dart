@@ -39,8 +39,10 @@ class ClassFirestore {
       'teacherNmae': teacherName,
       'isRecordingAttendance': false,
       'teacherBlueAddress': teacherBlueAddress,
-      'teacherBlueName': teacherBlueName
+      'teacherBlueName': teacherBlueName,
+      'noOfStudents': 0
     });
+    // these below dont work like that so directly implent when creating document
     classDoc.collection('quiz');
     classDoc.collection('assignment');
     classDoc.collection('classStudents');
@@ -60,14 +62,17 @@ class ClassFirestore {
       'classUid': classUid,
       'studentRollNo': studentRollNo
     });
+    // these below dont work like that so directly implent when creating document
     studentDoc.collection('assignment');
     studentDoc.collection('quiz');
     studentDoc.collection('attendance');
+    //
     firestoreInstance
         .collection('class')
         .doc(classUid)
         .collection('classStudents')
-        .doc(user.uid);
+        .doc(user.uid)
+        .set({'classStudentUid': studentDoc});
     firestoreInstance
         .collection('class')
         .doc(classUid)

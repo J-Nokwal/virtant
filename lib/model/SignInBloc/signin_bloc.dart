@@ -17,21 +17,24 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     SignInEvent event,
   ) async* {
     // expand on Exception format
-    bool isFirebaseSetUp = await userRepository.isFirebaseSetUp();
+
     try {
       if (event is SignInButtonPressedEvent) {
         yield SignInLoadingState();
         User user = await userRepository.signInEmailAndPassword(
             event.email, event.password);
-        if (!isFirebaseSetUp) {
-          yield SignInFirebaseNotSetUpState();
-        } else
-          yield SignInSuccessFullState(user: user);
-      }
-      //   else if (event is SignUpButtonPressedEvent) {
-      //     yield SignUpButtonPressedState();
-      //   } else if (event is ForgotPasswordButtonPressedEvent)
-      //     yield ForgotPasswordButtonPressedState();
+        bool isSignedIn = await userRepository.isSignedIn();
+        if (isSignedIn) {
+          bool isFirebaseSetUp = await userRepository.isFirebaseSetUp();
+          if (!isFirebaseSetUp) {
+            yield SignInFirebaseNotSetUpState();
+          } else
+            yield SignInSuccessFullState(user: user);
+        }
+      } else if (event is SignUpButtonPressedEventFromSignInScreen) {
+        yield SignUpButtonPressedFromSignInScreenState();
+      } else if (event is ForgotPasswordButtonPressedEvent)
+        yield ForgotPasswordButtonPressedState();
     } on Exception catch (e) {
       yield SignInFailureState(e.toString());
     }

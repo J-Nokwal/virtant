@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,35 +17,37 @@ class _SignInScreenState extends State<SignInScreen> {
   final _signInFormKey = GlobalKey<FormState>();
   final UserRepository userRepository = UserRepository();
   bool _secureText = true;
-
+  TextEditingController _email = TextEditingController();
+  TextEditingController _password = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('assets/images/PagebackgroundImagefull.png'),
-              fit: BoxFit.cover),
-        ),
-        child: BlocConsumer<SignInBloc, SignInState>(
-          listener: (context, state) {
-            if (state is SignInSuccessFullState) {
-              Navigator.of(context).pushReplacementNamed('/d',
-                  arguments: 'this is home page in debug screen');
-            } else if (state is SignInFirebaseNotSetUpState) {
-              Navigator.of(context).pushReplacementNamed('/SignUp/SignUpBasic');
-            } else if (state is SignInFailureState) {}
-          },
-          builder: (context, state) {
-            if (state is SignInInitialState) {
-              return Center(
-                child: SingleChildScrollView(
-                  child: PopContainer(
-                    height: 430,
-                    child: BlocProvider(
-                      create: (context) =>
-                          SignInBloc(userRepository: userRepository),
-                      child: Padding(
+    return BlocProvider(
+      create: (context) => SignInBloc(userRepository: userRepository),
+      child: Scaffold(
+        body: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('assets/images/PagebackgroundImagefull.png'),
+                fit: BoxFit.cover),
+          ),
+          child: Center(
+            child: SingleChildScrollView(
+              child: PopContainer(
+                height: 430,
+                child: BlocConsumer<SignInBloc, SignInState>(
+                  listener: (context, state) {
+                    if (state is SignInSuccessFullState) {
+                      Navigator.of(context)
+                          .pushReplacementNamed('/home', arguments: state.user);
+                    } else if (state is SignInFirebaseNotSetUpState) {
+                      Navigator.of(context)
+                          .pushReplacementNamed('/SignUp/SignUpBasic');
+                    } else if (state is SignInFailureState) {}
+                  },
+                  builder: (context, state) {
+                    print(state);
+                    if (state is SignInInitialState) {
+                      return Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 15, vertical: 8),
                         child: Form(
@@ -63,6 +66,8 @@ class _SignInScreenState extends State<SignInScreen> {
                                 height: 30,
                               ),
                               TextFormField(
+                                controller: _email,
+                                keyboardType: TextInputType.emailAddress,
                                 decoration: InputDecoration(
                                     enabledBorder: outlineFormInputBorder(),
                                     focusColor: purpleDark,
@@ -76,6 +81,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               ),
                               SizedBox(height: 10),
                               TextFormField(
+                                controller: _password,
                                 decoration: InputDecoration(
                                     enabledBorder: outlineFormInputBorder(),
                                     focusColor: purpleDark,
@@ -110,12 +116,11 @@ class _SignInScreenState extends State<SignInScreen> {
                                         color: whitePure, fontSize: 20),
                                   )),
                                 ),
-                                onTap: () {
-                                  // TODO add controller support
-                                  SignInBloc(userRepository: userRepository)
-                                      .add(SignInButtonPressedEvent(
-                                          email: 'email',
-                                          password: 'password'));
+                                onTap: () async {
+                                  BlocProvider.of<SignInBloc>(context).add(
+                                      SignInButtonPressedEvent(
+                                          email: _email.text,
+                                          password: _password.text));
                                 },
                               ),
                               SizedBox(height: 10),
@@ -153,14 +158,14 @@ class _SignInScreenState extends State<SignInScreen> {
                             ],
                           ),
                         ),
-                      ),
-                    ),
-                  ),
+                      );
+                    }
+                    return SplashContainer();
+                  },
                 ),
-              );
-            }
-            return SplashScreen();
-          },
+              ),
+            ),
+          ),
         ),
       ),
     );

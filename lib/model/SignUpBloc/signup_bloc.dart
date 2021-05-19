@@ -9,8 +9,10 @@ part 'signup_event.dart';
 part 'signup_state.dart';
 
 class SignUpBloc extends Bloc<SignUpEvent, SignupState> {
-  final UserRepository userRepository;
-  SignUpBloc({@required this.userRepository}) : super(SignUpInitialState());
+  UserRepository userRepository;
+  SignUpBloc() : super(SignUpInitialState()) {
+    this.userRepository = UserRepository();
+  }
 
   @override
   Stream<SignupState> mapEventToState(

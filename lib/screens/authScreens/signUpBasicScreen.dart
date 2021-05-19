@@ -10,7 +10,7 @@ class SignUpBasicScreen extends StatefulWidget {
 
 class _SignUpBasicScreenState extends State<SignUpBasicScreen> {
   bool _signUpAsTeacher = false;
-
+  TextEditingController _displayName = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,6 +42,8 @@ class _SignUpBasicScreenState extends State<SignUpBasicScreen> {
                       height: 40,
                     ),
                     TextFormField(
+                      controller: _displayName,
+                      keyboardType: TextInputType.name,
                       decoration: InputDecoration(
                           enabledBorder: outlineFormInputBorder(),
                           focusColor: purpleDark,
@@ -86,12 +88,11 @@ class _SignUpBasicScreenState extends State<SignUpBasicScreen> {
                         )),
                       ),
                       onTap: () {
-                        //TODO implement controller for name
                         Navigator.of(context).pushNamed(
                             _signUpAsTeacher
                                 ? '/SignUp/SignUpBasic/Teacher'
                                 : '/SignUp/SignUpBasic/Student',
-                            arguments: '');
+                            arguments: _displayName.text);
                       },
                     ),
                     SizedBox(height: 15),

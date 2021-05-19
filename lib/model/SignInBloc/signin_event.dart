@@ -11,6 +11,6 @@ class SignInButtonPressedEvent extends SignInEvent {
   });
 }
 
-// class SignUpButtonPressedEvent extends SignInEvent {}
+class SignUpButtonPressedEventFromSignInScreen extends SignInEvent {}
 
-// class ForgotPasswordButtonPressedEvent extends SignInEvent {}
+class ForgotPasswordButtonPressedEvent extends SignInEvent {}
