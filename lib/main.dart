@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
     // );
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
+      home: App(),
     );
   }
 }
@@ -47,7 +47,7 @@ class App extends StatelessWidget {
         }
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          return MyAppp();
+          return HomeScreen();
         }
 
         return SplashScreen(); // Otherwise, show something whilst waiting for initialization to complete
@@ -76,7 +76,7 @@ class MyAppp extends StatelessWidget {
         if (state is AuthenticatingState) {
           return SplashScreen();
         }
-        return DebugScreen(text: 'bloc screen7777777777777777777777777777');
+        return DebugScreen(text: 'Class MyApp debug Screen');
       }),
     );
   }

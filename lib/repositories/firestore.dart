@@ -56,33 +56,67 @@ class ClassFirestore {
       @required int studentRollNo}) async {
     DocumentReference studentDoc =
         firestoreInstance.collection('students').doc(user.uid);
-
+    DocumentReference classReference =
+        firestoreInstance.collection('class').doc(classUid);
     studentDoc.set({
       'studentName': studentName,
-      'classUid': classUid,
+      'classUid': classReference,
       'studentRollNo': studentRollNo
     });
-    // these below dont work like that so directly implent when creating document
-    studentDoc.collection('assignment');
-    studentDoc.collection('quiz');
-    studentDoc.collection('attendance');
-    //
-    firestoreInstance
-        .collection('class')
-        .doc(classUid)
-        .collection('classStudents')
-        .doc(user.uid)
-        .set({'classStudentUid': studentDoc});
-    firestoreInstance
-        .collection('class')
-        .doc(classUid)
-        .update({'noOfStudents': FieldValue.increment(1)});
+
+    classReference.get().then((value) async {
+      Map<String, dynamic> a = value['studentsData'];
+      a.addAll({
+        // remove roll no field
+        user.uid: {
+          'studentName': studentName,
+          'studentRollNo': studentRollNo,
+          'isPresent': false
+        }
+      });
+      classReference.update({'studentsData': a});
+    });
 
     return true;
   }
 
-  Future<void> startTakingAttendance() async {}
-  Future<void> markAttendance() async {}
+  Future<void> startTakingAttendance() async {
+    String date = DateTime.now().toString().split(' ')[0];
+    DocumentReference classRefenrence =
+        firestoreInstance.collection('class').doc(user.uid);
+    classRefenrence.update({'isRecordingAttendance': true});
+    DocumentReference temp = classRefenrence.collection('attendane').doc(date);
+    temp.get().then((value) {
+      if (!value.exists) {
+        temp.update(value['classStudents']);
+      }
+    });
+  }
+
+  Future<void> stopTakingAttendance() async {
+    DocumentReference classRefenrence =
+        firestoreInstance.collection('class').doc(user.uid);
+    classRefenrence.update({'isRecordingAttendance': false});
+  }
+
+  Future<void> markAttendance() async {
+    String date = DateTime.now().toString().split(' ')[0];
+    firestoreInstance.collection('students').doc(user.uid).get().then((value) {
+      DocumentReference classRefenrence = value['classUid'];
+      classRefenrence.collection('attendance').doc(date).update({
+        user.uid: {'studentName': user.displayName, 'isPresent': true}
+      });
+    });
+  }
+
+  // ignore: missing_return
+  Stream<DocumentSnapshot> isTakingattendance() {
+    firestoreInstance.collection('students').doc(user.uid).get().then((value) {
+      DocumentReference classRefenrence = value['classUid'];
+      return classRefenrence.snapshots();
+    });
+  }
+
   // to add viewAttendance from teacherside and student side
   // to add manual mark attendance
   Future<void> createAssignment() async {}

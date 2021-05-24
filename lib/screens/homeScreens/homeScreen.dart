@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:virtant/repositories/firestore.dart';
 import 'package:virtant/repositories/userRepository.dart';
 import 'package:virtant/screens/colors.dart';
+import 'package:virtant/screens/debug2.dart';
 import 'package:virtant/screens/debugScreen.dart';
 import 'package:virtant/screens/homeScreens/attendanceScreen.dart';
 
@@ -27,7 +28,7 @@ class HomeScreen extends StatelessWidget {
           AttendanceScreen(
             isTeacher: true,
           ),
-          Center(child: Text(1.toString())),
+          Debug2(),
           Center(
               child: InkWell(
                   onTap: () {
