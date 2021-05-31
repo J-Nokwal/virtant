@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -56,6 +57,16 @@ class AttendanceScreen extends StatelessWidget {
             ),
             SliverList(
                 delegate: SliverChildListDelegate(<Widget>[
+              StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection('class')
+                    .doc('N8YnmoJS8nSNCdosKyxp')
+                    .snapshots(),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  return Container(
+                      child: Text(snapshot.data['noOfStudents'].toString()));
+                },
+              ),
               Container(height: 140, color: Colors.transparent),
               Container(height: 140, color: Colors.transparent),
               Container(height: 140, color: Colors.green),

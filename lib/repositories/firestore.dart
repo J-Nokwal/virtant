@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/widgets.dart';
 
 class ClassFirestore {
@@ -80,6 +81,10 @@ class ClassFirestore {
     return true;
   }
 
+  Stream<DocumentSnapshot> getClassDetails() {
+    return firestoreInstance.collection('class').doc(user.uid).snapshots();
+  }
+
   Future<void> startTakingAttendance() async {
     String date = DateTime.now().toString().split(' ')[0];
     DocumentReference classRefenrence =
@@ -104,7 +109,11 @@ class ClassFirestore {
     firestoreInstance.collection('students').doc(user.uid).get().then((value) {
       DocumentReference classRefenrence = value['classUid'];
       classRefenrence.collection('attendance').doc(date).update({
-        user.uid: {'studentName': user.displayName, 'isPresent': true}
+        user.uid: {
+          'studentName': user.displayName,
+          'isPresent': true,
+          'timeStamp': FieldValue.serverTimestamp(),
+        }
       });
     });
   }
@@ -119,8 +128,60 @@ class ClassFirestore {
 
   // to add viewAttendance from teacherside and student side
   // to add manual mark attendance
-  Future<void> createAssignment() async {}
-  Future<void> submitAssignment() async {}
+
+  Future<void> createAssignment({
+    @required String assignmentName,
+    @required String assignmentdiscription,
+    @required int assignmentMaxMarks,
+    @required DateTime assignmentFinishTime,
+    String assignmentLink = '',
+  }) async {
+    String date = DateTime.now().toString().split(' ')[0];
+    firestoreInstance
+        .collection('class')
+        .doc(user.uid)
+        .collection('assignment')
+        .doc(date)
+        .set({
+      'discription': assignmentdiscription,
+      'title': assignmentName,
+      'endTime': assignmentFinishTime.microsecondsSinceEpoch,
+      'documentLink': assignmentLink,
+      'maxMarks': assignmentMaxMarks
+    });
+  }
+
+  // ignore: missing_return
+  Future<DocumentReference> getclassUid() async {
+    firestoreInstance.collection('students').doc(user.uid).get().then((value) {
+      DocumentReference classRefenrence = value['classUid'];
+      return classRefenrence;
+    });
+  }
+
+  // ignore: missing_return
+  Stream<QuerySnapshot> getAssignments(
+      {@required DocumentReference classRefenrence}) {
+    return classRefenrence.collection('assignment').snapshots();
+  }
+
+  Future<void> submitAssignment(
+      {@required String documentLink,
+      @required int assignmentMaxMarks,
+      @required DocumentReference assignmentReference}) async {
+    firestoreInstance
+        .collection('students')
+        .doc(user.uid)
+        .collection('assignment')
+        .doc(assignmentReference.id)
+        .set({
+      'documentlink': documentLink,
+      'marks': -1,
+      'given': true,
+      'maxMarks': assignmentMaxMarks
+    });
+  }
+
   // to view assignments from both side
   Future<void> createQuiz() async {}
   Future<void> giveQuiz() async {}
