@@ -2,9 +2,11 @@ import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:virtant/model/CreateJoinClassBloc/createjoinclass_bloc.dart';
+import 'package:virtant/repositories/objectClasses.dart';
 import 'package:virtant/screens/SplashScreen.dart';
 import 'package:virtant/screens/colors.dart';
 import '../widgetTools.dart';
+import 'package:toast/toast.dart';
 
 class SignUpBasicTeacherScreen extends StatelessWidget {
   final String displayName;
@@ -34,8 +36,10 @@ class SignUpBasicTeacherScreen extends StatelessWidget {
                     //implement popup
                     FlutterClipboard.copy(state.classId).then(
                         (value) => print('${state.classId} copy to clipboard'));
-                    Navigator.of(context)
-                        .popAndPushNamed('/d', arguments: 'teacher home page');
+                    Toast.show("Class Code copied to clipboard", context,
+                        duration: 3, backgroundColor: purpleDark);
+                    Navigator.of(context).popAndPushNamed('/home',
+                        arguments: HomeData(isTeacher: true, user: state.user));
                   }
                 },
                 builder: (context, state) {

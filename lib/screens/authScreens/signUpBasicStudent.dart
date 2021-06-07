@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:virtant/model/CreateJoinClassBloc/createjoinclass_bloc.dart';
+import 'package:virtant/repositories/objectClasses.dart';
 import 'package:virtant/screens/SplashScreen.dart';
 import 'package:virtant/screens/colors.dart';
 
@@ -30,8 +32,9 @@ class SignUpBasicStudentScreen extends StatelessWidget {
               child: BlocConsumer<CreateJoinClassBloc, CreateJoinClassState>(
                 listener: (context, state) {
                   if (state is JoinClassSuccessFullState) {
-                    Navigator.of(context)
-                        .popAndPushNamed('/d', arguments: 'Student Home page');
+                    Navigator.of(context).popAndPushNamed('/home',
+                        arguments:
+                            HomeData(isTeacher: false, user: state.user));
                   }
                 },
                 builder: (context, state) {

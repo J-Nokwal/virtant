@@ -34,7 +34,8 @@ class CreateJoinClassBloc
           className: event.className,
           classDescription: event.classDescription);
       await userRepository.updateUserName(userName: event.teacherName);
-      yield CreateClassSuccessFullState(classId: user.uid);
+
+      yield CreateClassSuccessFullState(classId: user.uid, user: user);
     } else if (event is JoinClassEvent) {
       yield CreateJoinClassLoadingState();
       await classFirestore.joinClass(
@@ -42,7 +43,7 @@ class CreateJoinClassBloc
           studentName: event.studentName,
           studentRollNo: event.studentRollNo);
       await userRepository.updateUserName(userName: event.studentName);
-      yield JoinClassSuccessFullState();
+      yield JoinClassSuccessFullState(user: user);
     }
   }
 }

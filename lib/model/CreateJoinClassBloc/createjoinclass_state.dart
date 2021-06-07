@@ -9,8 +9,13 @@ class CreateJoinClassLoadingState extends CreateJoinClassState {}
 
 class CreateClassSuccessFullState extends CreateJoinClassState {
   final String classId;
+  final User user;
 
-  CreateClassSuccessFullState({@required this.classId});
+  CreateClassSuccessFullState({@required this.classId, @required this.user});
 }
 
-class JoinClassSuccessFullState extends CreateJoinClassState {}
+class JoinClassSuccessFullState extends CreateJoinClassState {
+  final User user;
+
+  JoinClassSuccessFullState({@required this.user});
+}

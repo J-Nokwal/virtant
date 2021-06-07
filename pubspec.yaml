@@ -23,15 +23,16 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  clipboard: ^0.1.3
   cloud_firestore: ^1.0.7
+  convex_bottom_bar: ^3.0.0
   cupertino_icons: ^1.0.2
   firebase_auth: ^1.1.2
   firebase_core: ^1.1.0
   flutter_bloc: ^7.0.0
   flutter_bluetooth_serial: ^0.2.2
   flutter_scan_bluetooth: ^2.0.0
-  convex_bottom_bar: ^3.0.0
-  clipboard: ^0.1.3
+  toast: ^0.1.5
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -49,7 +50,6 @@ flutter:
   assets:
     - assets/images/
     # - assets/images/PagebackgroundImagefull.png
-
     #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

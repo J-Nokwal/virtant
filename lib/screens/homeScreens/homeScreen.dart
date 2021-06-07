@@ -20,7 +20,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.pink,
+      backgroundColor: whitePink,
       body: PageView(
         physics: BouncingScrollPhysics(),
         controller: _pageController,

@@ -28,7 +28,7 @@ class RouteGenerator {
       //   }
       case '/':
         {
-          final args = settings.arguments;
+          // final args = settings.arguments;
           return MaterialPageRoute(builder: (_) => App());
         }
       case '/SignIn':

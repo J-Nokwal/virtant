@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:virtant/model/AuthBloc/auth_bloc.dart';
 import 'package:virtant/repositories/userRepository.dart';
 import 'package:virtant/routeGenerator.dart';
 import 'package:virtant/screens/SplashScreen.dart';
+import 'package:virtant/screens/colors.dart';
 import 'package:virtant/screens/debugScreen.dart';
 import 'package:virtant/screens/homeScreens/homeScreen.dart';
 import 'package:virtant/screens/somethingWentWrong.dart';
@@ -18,16 +20,16 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // return MaterialApp(
-    //   title: 'Material App',
-    //   initialRoute: '/home',
-    //   onGenerateRoute: RouteGenerator.generateRoute,
-    //   debugShowCheckedModeBanner: false,
-    // );
     return MaterialApp(
+      title: 'Material App',
+      initialRoute: '/',
+      onGenerateRoute: RouteGenerator.generateRoute,
       debugShowCheckedModeBanner: false,
-      home: App(),
     );
+    // return MaterialApp(
+    //   debugShowCheckedModeBanner: false,
+    //   home: App(),
+    // );
   }
 }
 
@@ -46,17 +48,26 @@ class App extends StatelessWidget {
           return SomethingWentWrong();
         }
         // Once complete, show your application
+        // return MyApp();
         if (snapshot.connectionState == ConnectionState.done) {
-          return HomeScreen();
+          return MyAppp();
         }
-
-        return SplashScreen(); // Otherwise, show something whilst waiting for initialization to complete
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return DebugScreen(text: 'waiting for firebase initialization');
+        }
+        return DebugScreen(
+            text:
+                'App class error'); // Otherwise, show something whilst waiting for initialization to complete
       },
     );
   }
 }
 
 class MyAppp extends StatelessWidget {
+  // defaultApp can be remove later
+  // App class do the same
+  // FirebaseApp defaultApp = Firebase.app();
+
   final UserRepository userRepository = UserRepository();
   @override
   Widget build(BuildContext context) {

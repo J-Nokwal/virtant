@@ -63,8 +63,7 @@ class AttendanceScreen extends StatelessWidget {
                     .doc('N8YnmoJS8nSNCdosKyxp')
                     .snapshots(),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  return Container(
-                      child: Text(snapshot.data['noOfStudents'].toString()));
+                  return Container(child: Text(""));
                 },
               ),
               Container(height: 140, color: Colors.transparent),
