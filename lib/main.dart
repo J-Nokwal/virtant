@@ -7,9 +7,7 @@ import 'package:virtant/model/AuthBloc/auth_bloc.dart';
 import 'package:virtant/repositories/userRepository.dart';
 import 'package:virtant/routeGenerator.dart';
 import 'package:virtant/screens/SplashScreen.dart';
-import 'package:virtant/screens/colors.dart';
 import 'package:virtant/screens/debugScreen.dart';
-import 'package:virtant/screens/homeScreens/homeScreen.dart';
 import 'package:virtant/screens/somethingWentWrong.dart';
 
 void main() {
@@ -53,7 +51,7 @@ class App extends StatelessWidget {
           return MyAppp();
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return DebugScreen(text: 'waiting for firebase initialization');
+          return SplashScreen();
         }
         return DebugScreen(
             text:
