@@ -8,6 +8,7 @@ import 'package:virtant/screens/authScreens/signUpBasicTeacher.dart';
 import 'package:virtant/screens/authScreens/signUpScreen.dart';
 import 'package:virtant/screens/debugScreen.dart';
 import 'package:virtant/screens/homeScreens/homeScreen.dart';
+import 'package:virtant/screens/homeScreens/settings.dart';
 import 'package:virtant/screens/somethingWentWrong.dart';
 
 class RouteGenerator {
@@ -15,7 +16,7 @@ class RouteGenerator {
     switch (settings.name) {
       case '/home':
         {
-          final args = settings.arguments as HomeData;
+          // final args = settings.arguments as HomeData;
           return MaterialPageRoute(
               builder: (_) => HomeScreen(
                   // user: args.user,
@@ -49,20 +50,31 @@ class RouteGenerator {
         {
           final args = settings.arguments;
           return MaterialPageRoute(
-              builder: (_) => SignUpBasicTeacherScreen(displayName: args));
+              builder: (_) =>
+                  SignUpBasicTeacherScreen(displayName: args.toString()));
         }
 
       case '/SignUp/SignUpBasic/Student':
         {
           final args = settings.arguments;
           return MaterialPageRoute(
-              builder: (_) => SignUpBasicStudentScreen(displayName: args));
+              builder: (_) =>
+                  SignUpBasicStudentScreen(displayName: args.toString()));
         }
       case '/home':
         {
-          final args = settings.arguments as HomeData;
+          // final args = settings.arguments as HomeData;
           return MaterialPageRoute(
               builder: (_) => HomeScreen(
+                  // user: args.user,
+                  // isTeacher: args.isTeacher,
+                  ));
+        }
+      case '/home/settings':
+        {
+          // final args = settings.arguments as HomeData;
+          return MaterialPageRoute(
+              builder: (_) => SettingsScreen(
                   // user: args.user,
                   // isTeacher: args.isTeacher,
                   ));
@@ -70,7 +82,8 @@ class RouteGenerator {
       case '/d':
         {
           final args = settings.arguments;
-          return MaterialPageRoute(builder: (_) => DebugScreen(text: args));
+          return MaterialPageRoute(
+              builder: (_) => DebugScreen(text: args.toString()));
         }
       default:
         {

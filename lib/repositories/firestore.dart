@@ -4,7 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/widgets.dart';
 
 class ClassFirestore {
-  final User user;
+  final User? user;
   final FirebaseFirestore firestoreInstance = FirebaseFirestore.instance;
   ClassFirestore({@required this.user});
 
@@ -13,7 +13,7 @@ class ClassFirestore {
       return this
           .firestoreInstance
           .collection('class')
-          .doc(user.uid)
+          .doc(user?.uid)
           .get()
           .then((doc) {
         if (doc.exists) {
@@ -26,18 +26,18 @@ class ClassFirestore {
     }
   }
 
-  Future<String> createClass(
-      {@required String teacherName,
-      @required String classDescription,
-      @required String className,
-      @required String teacherBlueAddress,
-      @required String teacherBlueName}) async {
+  Future<String?> createClass(
+      {@required String? teacherName,
+      @required String? classDescription,
+      @required String? className,
+      @required String? teacherBlueAddress,
+      @required String? teacherBlueName}) async {
     DocumentReference classDoc =
-        firestoreInstance.collection('class').doc(user.uid);
+        firestoreInstance.collection('class').doc(user?.uid);
     classDoc.set({
       'classDescription': classDescription,
       'className': className,
-      'teacherNmae': teacherName,
+      'teacherName': teacherName,
       'isRecordingAttendance': false,
       'teacherBlueAddress': teacherBlueAddress,
       'teacherBlueName': teacherBlueName,
@@ -48,15 +48,15 @@ class ClassFirestore {
     classDoc.collection('assignment');
     classDoc.collection('classStudents');
     classDoc.collection('attendance');
-    return user.uid.toString();
+    return user?.uid;
   }
 
   Future<bool> joinClass(
-      {@required String classUid,
-      @required String studentName,
-      @required int studentRollNo}) async {
+      {@required String? classUid,
+      @required String? studentName,
+      @required int? studentRollNo}) async {
     DocumentReference studentDoc =
-        firestoreInstance.collection('students').doc(user.uid);
+        firestoreInstance.collection('students').doc(user?.uid);
     DocumentReference classReference =
         firestoreInstance.collection('class').doc(classUid);
     studentDoc.set({
@@ -82,7 +82,13 @@ class ClassFirestore {
   }
 
   Stream<DocumentSnapshot> getClassDetails() {
+    // uncomment after debuging and comment line below
     return firestoreInstance.collection('class').doc(user.uid).snapshots();
+    // print("kkkk,${user.uid}");
+    // return firestoreInstance
+    //     .collection('class')
+    //     .doc("IlXTMCWwlyeJXBV6c2OyoWjN5hG2")
+    //     .snapshots();
   }
 
   Future<void> startTakingAttendance() async {
@@ -90,12 +96,11 @@ class ClassFirestore {
     DocumentReference classRefenrence =
         firestoreInstance.collection('class').doc(user.uid);
     classRefenrence.update({'isRecordingAttendance': true});
-    DocumentReference temp = classRefenrence.collection('attendane').doc(date);
-    temp.get().then((value) {
-      if (!value.exists) {
-        temp.update(value['classStudents']);
-      }
-    });
+    // DocumentReference attendanceDateDocSnapshot =
+    //     await classRefenrence.collection('attendance').doc(date);
+    // if (!attendanceDateDocSnapshot.exists){
+    //   attendanceDateDocSnapshot.
+    // }
   }
 
   Future<void> stopTakingAttendance() async {
@@ -118,22 +123,30 @@ class ClassFirestore {
     });
   }
 
-  // ignore: missing_return
-  Stream<DocumentSnapshot> isTakingattendance() {
-    firestoreInstance.collection('students').doc(user.uid).get().then((value) {
-      DocumentReference classRefenrence = value['classUid'];
-      return classRefenrence.snapshots();
-    });
+  Future<bool> isTakingattendance({@required bool? isTeacher}) async {
+    DocumentSnapshot classSnapShort;
+    if (isTeacher) {
+      classSnapShort =
+          await firestoreInstance.collection('class').doc(user.uid).get();
+    } else {
+      DocumentSnapshot studentSnapShot =
+          await firestoreInstance.collection('students').doc(user.uid).get();
+      classSnapShort = await firestoreInstance
+          .collection('class')
+          .doc(studentSnapShot['classUid'])
+          .get();
+    }
+    return classSnapShort["isRecordingAttendance"];
   }
 
   // to add viewAttendance from teacherside and student side
   // to add manual mark attendance
 
   Future<void> createAssignment({
-    @required String assignmentName,
-    @required String assignmentdiscription,
-    @required int assignmentMaxMarks,
-    @required DateTime assignmentFinishTime,
+    @required String? assignmentName,
+    @required String? assignmentdiscription,
+    @required int? assignmentMaxMarks,
+    @required DateTime? assignmentFinishTime,
     String assignmentLink = '',
   }) async {
     String date = DateTime.now().toString().split(' ')[0];
@@ -145,14 +158,14 @@ class ClassFirestore {
         .set({
       'discription': assignmentdiscription,
       'title': assignmentName,
-      'endTime': assignmentFinishTime.microsecondsSinceEpoch,
+      'endTime': assignmentFinishTime?.microsecondsSinceEpoch,
       'documentLink': assignmentLink,
       'maxMarks': assignmentMaxMarks
     });
   }
 
   // ignore: missing_return
-  Future<DocumentReference> getclassUid() async {
+  Future<DocumentReference?> getclassUid() async {
     firestoreInstance.collection('students').doc(user.uid).get().then((value) {
       DocumentReference classRefenrence = value['classUid'];
       return classRefenrence;
@@ -160,20 +173,20 @@ class ClassFirestore {
   }
 
   // ignore: missing_return
-  Stream<QuerySnapshot> getAssignments(
-      {@required DocumentReference classRefenrence}) {
+  Stream<QuerySnapshot?> getAssignments(
+      {@required DocumentReference? classRefenrence}) {
     return classRefenrence.collection('assignment').snapshots();
   }
 
   Future<void> submitAssignment(
-      {@required String documentLink,
-      @required int assignmentMaxMarks,
-      @required DocumentReference assignmentReference}) async {
+      {@required String? documentLink,
+      @required int? assignmentMaxMarks,
+      @required DocumentReference? assignmentReference}) async {
     firestoreInstance
         .collection('students')
         .doc(user.uid)
         .collection('assignment')
-        .doc(assignmentReference.id)
+        .doc(assignmentReference?.id)
         .set({
       'documentlink': documentLink,
       'marks': -1,

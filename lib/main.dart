@@ -73,9 +73,9 @@ class MyAppp extends StatelessWidget {
       create: (context) =>
           AuthBloc(userRepository: userRepository)..add(AppStartedEvent()),
       child: BlocConsumer<AuthBloc, AuthState>(listener: (context, state) {
+        // Navigator.of(context).popAndPushNamed('/home');
         if (state is AuthenticatedState) {
-          Navigator.of(context)
-              .popAndPushNamed('/d', arguments: 'home page with');
+          Navigator.of(context).popAndPushNamed('/home');
         } else if (state is UnAuthenticatedState) {
           Navigator.of(context).popAndPushNamed('/SignIn');
         } else if (state is AuthFirebaseSetUp) {

@@ -20,3 +20,5 @@ Color blackPure = Color(0xFF000000);
 
 //
 Color graylight = Colors.grey[300];
+
+Color grayDark = Colors.grey[800];
