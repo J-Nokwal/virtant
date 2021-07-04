@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:virtant/main.dart';
-import 'package:virtant/repositories/objectClasses.dart';
+// import 'package:virtant/repositories/objectClasses.dart';
 import 'package:virtant/screens/authScreens/signInScreen.dart';
 import 'package:virtant/screens/authScreens/signUpBasicScreen.dart';
 import 'package:virtant/screens/authScreens/signUpBasicStudent.dart';
@@ -38,12 +38,12 @@ class RouteGenerator {
         }
       case '/signUp':
         {
-          final args = settings.arguments;
+          // final args = settings.arguments;
           return MaterialPageRoute(builder: (_) => SignUpScreen());
         }
       case '/SignUp/SignUpBasic':
         {
-          final args = settings.arguments;
+          // final args = settings.arguments;
           return MaterialPageRoute(builder: (_) => SignUpBasicScreen());
         }
       case '/SignUp/SignUpBasic/Teacher':

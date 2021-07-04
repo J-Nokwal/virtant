@@ -9,7 +9,7 @@ part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final UserRepository userRepository;
+  final UserRepository? userRepository;
   AuthBloc({@required this.userRepository}) : super(AuthInitialState());
 
   @override
@@ -19,14 +19,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     //add try catch
     if (event is AppStartedEvent) {
       yield AuthenticatingState();
-      bool isSignedIn = await userRepository.isSignedIn();
+      bool isSignedIn = await userRepository!.isSignedIn();
       if (isSignedIn) {
-        bool isFirebaseSetUp = await userRepository.isFirebaseSetUp();
+        bool isFirebaseSetUp = await userRepository!.isFirebaseSetUp();
 
         if (!isFirebaseSetUp) {
           yield AuthFirebaseSetUp();
         } else {
-          yield AuthenticatedState(user: await userRepository.getCurrentUser());
+          yield AuthenticatedState(
+              user: await userRepository!.getCurrentUser());
         }
         // print((await userRepository.getCurrentUser()).toString());
       } else {

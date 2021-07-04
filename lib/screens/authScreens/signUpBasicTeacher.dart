@@ -6,14 +6,13 @@ import 'package:virtant/repositories/objectClasses.dart';
 import 'package:virtant/screens/SplashScreen.dart';
 import 'package:virtant/screens/colors.dart';
 import '../widgetTools.dart';
-import 'package:toast/toast.dart';
 
 class SignUpBasicTeacherScreen extends StatelessWidget {
-  final String displayName;
+  final String? displayName;
   final TextEditingController _className = TextEditingController();
   final TextEditingController _classSubject = TextEditingController();
   final TextEditingController _classDescription = TextEditingController();
-  SignUpBasicTeacherScreen({Key key, @required this.displayName})
+  SignUpBasicTeacherScreen({Key? key, @required this.displayName})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -34,10 +33,11 @@ class SignUpBasicTeacherScreen extends StatelessWidget {
                 listener: (context, state) {
                   if (state is CreateClassSuccessFullState) {
                     //implement popup
-                    FlutterClipboard.copy(state.classId).then(
+                    FlutterClipboard.copy(state.classId!).then(
                         (value) => print('${state.classId} copy to clipboard'));
-                    Toast.show("Class Code copied to clipboard", context,
-                        duration: 3, backgroundColor: purpleDark);
+                    // implement toast
+                    // Toast.show("Class Code copied to clipboard", context,
+                    // duration: 3, backgroundColor: purpleDark);
                     Navigator.of(context).popAndPushNamed('/home',
                         arguments: HomeData(isTeacher: true, user: state.user));
                   }
@@ -127,7 +127,7 @@ class SignUpBasicTeacherScreen extends StatelessWidget {
                                       className: _className.text,
                                       classSubject: _classSubject.text,
                                       classDescription: _classDescription.text,
-                                      teacherName: displayName),
+                                      teacherName: displayName!),
                                 );
                               },
                             ),

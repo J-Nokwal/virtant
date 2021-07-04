@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:virtant/repositories/userRepository.dart';
 
 class DebugScreen extends StatelessWidget {
-  final String text;
+  final String? text;
 
-  DebugScreen({Key key, @required this.text}) : super(key: key);
+  DebugScreen({Key? key, @required this.text}) : super(key: key);
   // final UserRepository userRepository = UserRepository();
   // final TextEditingController a = TextEditingController();
   @override
@@ -15,7 +14,7 @@ class DebugScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(text),
+              Text(text!),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

@@ -9,7 +9,7 @@ part 'signin_event.dart';
 part 'signin_state.dart';
 
 class SignInBloc extends Bloc<SignInEvent, SignInState> {
-  final UserRepository userRepository;
+  final UserRepository? userRepository;
   SignInBloc({@required this.userRepository}) : super(SignInInitialState());
 
   @override
@@ -21,11 +21,11 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     try {
       if (event is SignInButtonPressedEvent) {
         yield SignInLoadingState();
-        User user = await userRepository.signInEmailAndPassword(
-            event.email, event.password);
-        bool isSignedIn = await userRepository.isSignedIn();
+        User? user = await userRepository?.signInEmailAndPassword(
+            event.email!, event.password!);
+        bool isSignedIn = await userRepository!.isSignedIn();
         if (isSignedIn) {
-          bool isFirebaseSetUp = await userRepository.isFirebaseSetUp();
+          bool isFirebaseSetUp = await userRepository!.isFirebaseSetUp();
           if (!isFirebaseSetUp) {
             yield SignInFirebaseNotSetUpState();
           } else

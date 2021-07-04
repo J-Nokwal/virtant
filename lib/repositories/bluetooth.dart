@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+// import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:flutter_scan_bluetooth/flutter_scan_bluetooth.dart' as ScanBlue;
 
 class Bluetooth {
-  FlutterBluetoothSerial bInstance;
-  Bluetooth() {
-    bInstance = FlutterBluetoothSerial.instance;
-  }
-  Future<String> getAddres() async {
-    return await this.bInstance.address;
-  }
+  // FlutterBluetoothSerial? bInstance;
+  // Bluetooth() {
+  //   bInstance = FlutterBluetoothSerial.instance;
+  // }
+  // Future<String> getAddres() async {
+  //   return await this.bInstance!.address;
+  // }
 
-  Future<String> getName() async {
-    return await this.bInstance.name;
-  }
+  // Future<String> getName() async {
+  //   return await this.bInstance!.name;
+  // }
 
   Future<bool> isNearBy(
-      {@required String bluetoothName,
-      @required String bluetoothAddress}) async {
+      {@required String? bluetoothName,
+      @required String? bluetoothAddress}) async {
     //may have problems
     ScanBlue.BluetoothDevice bd;
-    bd = ScanBlue.BluetoothDevice(bluetoothName, bluetoothAddress);
+    bd = ScanBlue.BluetoothDevice(bluetoothName!, bluetoothAddress!);
     return bd.nearby;
   }
 }

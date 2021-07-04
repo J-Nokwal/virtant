@@ -1,6 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:virtant/model/AttendanceRecord/attendancerecord_bloc.dart';
@@ -19,7 +17,7 @@ class AttendanceScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ClassFirestore _classFirestore = ClassFirestore(user: _user);
-    if (isTeacher) {
+    if (isTeacher!) {
       return MultiBlocProvider(
         providers: [
           BlocProvider<AttendanceRecordBloc>(

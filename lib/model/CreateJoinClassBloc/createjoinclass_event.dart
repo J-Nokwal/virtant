@@ -4,8 +4,8 @@ part of 'createjoinclass_bloc.dart';
 abstract class CreateJoinClassEvent {}
 
 class JoinClassEvent extends CreateJoinClassEvent {
-  final String classUid, studentName;
-  final int studentRollNo;
+  final String? classUid, studentName;
+  final int? studentRollNo;
 
   JoinClassEvent({
     @required this.classUid,
@@ -15,7 +15,7 @@ class JoinClassEvent extends CreateJoinClassEvent {
 }
 
 class CreateClassEvent extends CreateJoinClassEvent {
-  final String className, classDescription, classSubject, teacherName;
+  final String? className, classDescription, classSubject, teacherName;
 
   CreateClassEvent({
     @required this.className,

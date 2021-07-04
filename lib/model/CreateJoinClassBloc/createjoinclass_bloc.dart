@@ -20,22 +20,24 @@ class CreateJoinClassBloc
   Stream<CreateJoinClassState> mapEventToState(
     CreateJoinClassEvent event,
   ) async* {
-    final User user = await userRepository.getCurrentUser();
+    final User? user = await userRepository.getCurrentUser();
     final ClassFirestore classFirestore = ClassFirestore(user: user);
     if (event is CreateClassEvent) {
       yield CreateJoinClassLoadingState();
+      // ignore: unused_local_variable
       Bluetooth bluetooth = Bluetooth();
-      String teacherBlueAddress = await bluetooth.getAddres();
-      String teacherBlueName = await bluetooth.getName();
+      //TODO: implement bluetooth module to get address
+      // String teacherBlueAddress = await bluetooth.getAddres();
+      // String teacherBlueName = await bluetooth.getName();
       await classFirestore.createClass(
-          teacherBlueName: teacherBlueName,
-          teacherBlueAddress: teacherBlueAddress,
+          teacherBlueName: 'teacherBlueName',
+          teacherBlueAddress: 'teacherBlueAddress',
           teacherName: event.teacherName,
           className: event.className,
           classDescription: event.classDescription);
       await userRepository.updateUserName(userName: event.teacherName);
 
-      yield CreateClassSuccessFullState(classId: user.uid, user: user);
+      yield CreateClassSuccessFullState(classId: user?.uid, user: user);
     } else if (event is JoinClassEvent) {
       yield CreateJoinClassLoadingState();
       await classFirestore.joinClass(

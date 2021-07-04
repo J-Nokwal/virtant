@@ -8,7 +8,7 @@ class AuthInitialState extends AuthState {}
 class UnAuthenticatedState extends AuthState {}
 
 class AuthenticatedState extends AuthState {
-  final User user;
+  final User? user;
 
   AuthenticatedState({@required this.user});
 }

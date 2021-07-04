@@ -9,7 +9,7 @@ part 'signup_event.dart';
 part 'signup_state.dart';
 
 class SignUpBloc extends Bloc<SignUpEvent, SignupState> {
-  UserRepository userRepository;
+  UserRepository? userRepository;
   SignUpBloc() : super(SignUpInitialState()) {
     this.userRepository = UserRepository();
   }
@@ -21,8 +21,10 @@ class SignUpBloc extends Bloc<SignUpEvent, SignupState> {
     try {
       if (event is SignupButtonPressedEvent) {
         yield SignUpLoadingState();
-        User user = await userRepository.signUpUserWithEmailPass(
-            email: event.email, pass: event.password);
+        User? user = await userRepository?.signUpUserWithEmailPass(
+          email: event.email,
+          pass: event.password,
+        );
 
         yield SignUpSuccessFullState(user: user);
       } else if (event is SignInButtonPressedEvent) {}

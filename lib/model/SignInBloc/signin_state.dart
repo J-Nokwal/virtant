@@ -14,7 +14,7 @@ class SignInFailureState extends SignInState {
 }
 
 class SignInSuccessFullState extends SignInState {
-  final User user;
+  final User? user;
   SignInSuccessFullState({@required this.user});
 }
 

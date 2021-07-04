@@ -1,17 +1,13 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:virtant/repositories/firestore.dart';
-import 'package:virtant/repositories/userRepository.dart';
 import 'package:virtant/screens/colors.dart';
 import 'package:virtant/screens/debug2.dart';
 import 'package:virtant/screens/debugScreen.dart';
 import 'package:virtant/screens/homeScreens/attendanceScreen.dart';
 
 class HomeScreen extends StatelessWidget {
-  bool isTeacher = true;
+  final bool isTeacher = true;
   // final bool isTeacher;
   // final User user;
   final PageController _pageController = PageController();
@@ -42,7 +38,7 @@ class HomeScreen extends StatelessWidget {
                   child: Text(2.toString()))),
         ],
         onPageChanged: (index) {
-          _appBarKey.currentState.animateTo(index);
+          _appBarKey.currentState?.animateTo(index);
         },
       ),
       bottomNavigationBar: ConvexAppBar(

@@ -4,7 +4,7 @@ part of 'signin_bloc.dart';
 abstract class SignInEvent {}
 
 class SignInButtonPressedEvent extends SignInEvent {
-  final String email, password;
+  final String? email, password;
   SignInButtonPressedEvent({
     @required this.email,
     @required this.password,

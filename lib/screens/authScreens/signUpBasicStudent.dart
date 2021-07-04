@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,10 +9,10 @@ import 'package:virtant/screens/colors.dart';
 import '../widgetTools.dart';
 
 class SignUpBasicStudentScreen extends StatelessWidget {
-  final String displayName;
+  final String? displayName;
   final TextEditingController _classUid = TextEditingController();
   final TextEditingController _rollNo = TextEditingController();
-  SignUpBasicStudentScreen({Key key, @required this.displayName})
+  SignUpBasicStudentScreen({Key? key, @required this.displayName})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -109,7 +108,7 @@ class SignUpBasicStudentScreen extends StatelessWidget {
                                           classUid: _classUid.text,
                                           studentRollNo:
                                               int.parse(_rollNo.text),
-                                          studentName: displayName));
+                                          studentName: displayName!));
                                 },
                               ),
                               SizedBox(height: 15),

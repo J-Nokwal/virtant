@@ -3,25 +3,25 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 class UserRepository {
-  FirebaseAuth firebaseAuth;
+  FirebaseAuth? firebaseAuth;
 
   UserRepository() {
     this.firebaseAuth = FirebaseAuth.instance;
   }
 
   // sign up with email
-  Future<User> signUpUserWithEmailPass(
-      {@required String email, @required String pass}) async {
+  Future<User?> signUpUserWithEmailPass(
+      {@required String? email, @required String? pass}) async {
     try {
-      var authResult = await firebaseAuth.createUserWithEmailAndPassword(
-        email: email,
-        password: pass,
+      var authResult = await firebaseAuth?.createUserWithEmailAndPassword(
+        email: email!,
+        password: pass!,
       );
 
-      print("REPO : ${authResult.user.email}");
+      print("REPO : ${authResult?.user?.email}");
       // TODO: await authResult.user.sendEmailVerification();
 
-      return authResult.user;
+      return authResult?.user;
     } on PlatformException catch (e) {
       String authError = "";
       switch (e.code) {
@@ -61,13 +61,13 @@ class UserRepository {
   }
 
   // sign in with email and password
-  Future<User> signInEmailAndPassword(String email, String password) async {
+  Future<User?> signInEmailAndPassword(String email, String password) async {
     try {
-      var authresult = await firebaseAuth.signInWithEmailAndPassword(
+      var authresult = await firebaseAuth?.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-      return authresult.user;
+      return authresult?.user;
     } on PlatformException catch (e) {
       String authError = "";
       switch (e.code) {
@@ -113,12 +113,12 @@ class UserRepository {
 
   // check signIn
   Future<bool> isSignedIn() async {
-    var currentUser = firebaseAuth.currentUser;
+    var currentUser = firebaseAuth?.currentUser;
     return currentUser != null;
   }
 
   Future<bool> isFirebaseSetUp() async {
-    var name = firebaseAuth.currentUser.displayName;
+    var name = firebaseAuth?.currentUser?.displayName;
 
     return name != null;
 
@@ -130,16 +130,16 @@ class UserRepository {
   }
 
   // get current user
-  Future<User> getCurrentUser() async {
+  Future<User?> getCurrentUser() async {
     return FirebaseAuth.instance.currentUser;
   }
 
   bool isVerified() {
-    return FirebaseAuth.instance.currentUser.emailVerified;
+    return FirebaseAuth.instance.currentUser!.emailVerified;
   }
 
-  Future<void> updateUserName({@required String userName}) async {
-    await firebaseAuth.currentUser.updateProfile(displayName: userName);
+  Future<void> updateUserName({@required String? userName}) async {
+    await firebaseAuth?.currentUser?.updateProfile(displayName: userName);
   }
 }
 

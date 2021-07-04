@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:virtant/screens/colors.dart';
 
 class PopContainer extends StatelessWidget {
-  final Widget child;
-  final double height;
-  const PopContainer({Key key, @required this.child, this.height = 450})
+  final Widget? child;
+  final double? height;
+  const PopContainer({Key? key, @required this.child, this.height = 450})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
