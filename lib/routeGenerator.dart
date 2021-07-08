@@ -14,19 +14,6 @@ import 'package:virtant/screens/somethingWentWrong.dart';
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case '/home':
-        {
-          // final args = settings.arguments as HomeData;
-          return MaterialPageRoute(
-              builder: (_) => HomeScreen(
-                  // user: args.user,
-                  // isTeacher: args.isTeacher,
-                  ));
-        }
-      // case '/':
-      //   {
-      //     return MaterialPageRoute(builder: (_) => SignUpBasicStudentScreen());
-      //   }
       case '/':
         {
           // final args = settings.arguments;
@@ -61,6 +48,7 @@ class RouteGenerator {
               builder: (_) =>
                   SignUpBasicStudentScreen(displayName: args.toString()));
         }
+
       case '/home':
         {
           // final args = settings.arguments as HomeData;

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:virtant/model/AttendanceRecord/attendancerecord_bloc.dart';
+import 'package:virtant/model/AttendanceRecordBloc/attendancerecord_bloc.dart';
 import 'package:virtant/repositories/firestore.dart';
 import 'package:virtant/screens/SplashScreen.dart';
 import 'package:virtant/screens/colors.dart';
@@ -224,7 +224,118 @@ class AttendanceScreen extends StatelessWidget {
         ),
       );
     } else {
-      return Container();
+      return MultiBlocProvider(
+        providers: [
+          // add providers
+        ],
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/pageUpperCircle.png'),
+              fit: BoxFit.fitWidth,
+              alignment: Alignment.topCenter,
+            ),
+          ),
+          child: CustomScrollView(
+            physics: BouncingScrollPhysics(),
+            slivers: [
+              SliverAppBar(
+                stretch: true,
+                onStretchTrigger: null,
+                expandedHeight: 150.0,
+                automaticallyImplyLeading: false,
+                toolbarHeight: 80,
+                backgroundColor: Colors.transparent,
+                pinned: true,
+                actions: <Widget>[
+                  IconButton(
+                    icon: const Icon(Icons.settings_rounded),
+                    tooltip: 'settings',
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/home/settings');
+                    },
+                  ),
+                ],
+                flexibleSpace: FlexibleSpaceBar(
+                  titlePadding: EdgeInsets.fromLTRB(40, 20, 20, 20),
+                  collapseMode: CollapseMode.pin,
+                  title: Row(
+                    children: [
+                      Container(
+                        height: 50,
+                        width: 50,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25),
+                            color: Colors.amber),
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text('Name Here'),
+                    ],
+                  ),
+                ),
+              ),
+              SliverList(
+                  delegate: SliverChildListDelegate(<Widget>[
+                StreamBuilder(
+                  stream: _classFirestore.getClassDetails(),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Container(
+                        height: 70,
+                        color: whitePink,
+                        child: SplashContainer(),
+                      );
+                    } else
+                      return Center(
+                        child: Container(
+                          // margin: EdgeInsets.only(left: 32, right: 32),
+                          width: 354,
+                          height: 200,
+                          decoration: BoxDecoration(
+                              color: whitePure,
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Column(children: []),
+                        ),
+                      );
+                  },
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                Center(
+                  child: Container(
+                    width: 354,
+                    height: 70,
+                    decoration: BoxDecoration(
+                        color: purpleLight,
+                        borderRadius: BorderRadius.circular(20)),
+                    alignment: Alignment.center,
+                    child: InkWell(
+                      splashColor: Colors.black,
+                      onTap: () {
+                        Feedback.forLongPress(context);
+                      },
+                      onLongPress: () {
+                        Feedback.forTap(context);
+                      },
+                      child: Text(
+                        "Start Attendance",
+                        style: TextStyle(fontSize: 20, color: whitePink),
+                      ),
+                    ),
+                  ),
+                ),
+                Container(height: 140, color: Colors.transparent),
+                Container(height: 140, color: Colors.green),
+                Container(height: 140, color: Colors.amber),
+                Container(height: 140, color: Colors.green),
+              ]))
+            ],
+          ),
+        ),
+      );
     }
   }
 }
